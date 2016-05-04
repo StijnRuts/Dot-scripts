@@ -2,14 +2,14 @@
 source shared_function.sh
 
 setup() {
-    package_install dialog
+    package_install "dialog"
 
     ANSWER="/tmp/dot-scripts"
     HIGHLIGHT=0
 }
 
 main_menu() {
-    if [ $HIGHLIGHT != 12 ]; then
+    if [[ $HIGHLIGHT != 12 ]]; then
         HIGHLIGHT=$(( HIGHLIGHT + 1 ))
     fi
 
