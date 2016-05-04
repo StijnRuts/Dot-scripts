@@ -217,3 +217,14 @@ fi
 install_graphics_menu
 
 }
+
+install_xorg() {
+    print_title "XORG - https://wiki.archlinux.org/index.php/Xorg"
+    print_info "Xorg is the public, open-source implementation of the X window system version 11."
+    echo "Installing X-Server (req. for Desktopenvironment, GPU Drivers, Keyboardlayout,...)"
+    package_install "xorg-server xorg-server-utils xorg-server-xwayland xorg-xinit xorg-xkill"
+    package_install "xf86-input-synaptics xf86-input-mouse xf86-input-keyboard xf86-input-wacom xf86-input-joystick xf86-input-libinput"
+    package_install "mesa"
+    modprobe uinput
+    pause_function
+}

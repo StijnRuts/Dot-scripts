@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-install_multimedia_menu(){
+install_multimedia_menu() {
 
     install_alsa_pulse(){
         # Prep Variables
@@ -107,4 +107,339 @@ install_multimedia_menu(){
     esac
 
     install_multimedia_menu
+}
+
+install_audio_apps(){
+    while true
+    do
+        print_title "AUDIO APPS"
+        echo " 1) Players"
+        echo " 2) Editors|Tools"
+        echo " 3) Codecs"
+        echo ""
+        echo " b) BACK"
+        echo ""
+        AUDIO_OPTIONS+=" b"
+        read_input_options "$AUDIO_OPTIONS"
+        for OPT in ${OPTIONS[@]}; do
+            case "$OPT" in
+                1)
+                #PLAYERS {{{
+                while true
+                do
+                    print_title "AUDIO PLAYERS"
+                    echo " 1) $(menu_item "amarok")"
+                    echo " 2) $(menu_item "audacious")"
+                    echo " 3) $(menu_item "banshee")"
+                    echo " 4) $(menu_item "clementine")"
+                    echo " 5) $(menu_item "deadbeef")"
+                    echo " 6) $(menu_item "guayadeque")"
+                    echo " 7) $(menu_item "musique") $AUR"
+                    echo " 8) $(menu_item "nuvolaplayer") $AUR"
+                    echo " 9) $(menu_item "pragha")"
+                    echo "10) $(menu_item "radiotray") $AUR"
+                    echo "11) $(menu_item "rhythmbox")"
+                    echo "12) $(menu_item "spotify") $AUR"
+                    echo "13) $(menu_item "timidity++")"
+                    echo "14) $(menu_item "tomahawk") $AUR"
+                    echo "15) $(menu_item "quodlibet")"
+                    echo ""
+                    echo " b) BACK"
+                    echo ""
+                    AUDIO_PLAYER_OPTIONS+=" b"
+                    read_input_options "$AUDIO_PLAYER_OPTIONS"
+                    for OPT in ${OPTIONS[@]}; do
+                        case "$OPT" in
+                            1)
+                            package_install "amarok"
+                            ;;
+                            2)
+                            package_install "audacious audacious-plugins"
+                            ;;
+                            3)
+                            package_install "banshee"
+                            ;;
+                            4)
+                            package_install "clementine"
+                            ;;
+                            5)
+                            package_install "deadbeef"
+                            ;;
+                            6)
+                            package_install "guayadeque"
+                            ;;
+                            7)
+                            aur_package_install "musique"
+                            ;;
+                            8)
+                            aur_package_install "nuvolaplayer"
+                            ;;
+                            9)
+                            package_install "pragha"
+                            ;;
+                            10)
+                            aur_package_install "radiotray"
+                            ;;
+                            11)
+                            package_install "rhythmbox grilo grilo-plugins libgpod libdmapsharing gnome-python python-mako pywebkitgtk"
+                            ;;
+                            12)
+                            aur_package_install "spotify"
+                            ;;
+                            13)
+                            aur_package_install "timidity++ fluidr3"
+                            echo -e 'soundfont /usr/share/soundfonts/fluidr3/FluidR3GM.SF2' >> /etc/timidity++/timidity.cfg
+                            ;;
+                            14)
+                            aur_package_install "tomahawk"
+                            ;;
+                            15)
+                            package_install "quodlibet"
+                            ;;
+                            "b")
+                            break
+                            ;;
+                            *)
+                            invalid_option
+                            ;;
+                        esac
+                    done
+                    elihw
+                done
+                #}}}
+                OPT=1
+                ;;
+                2)
+                #EDITORS {{{
+                while true
+                do
+                    print_title "AUDIO EDITORS|TOOLS"
+                    echo " 1) $(menu_item "audacity")"
+                    echo " 2) $(menu_item "easytag")"
+                    echo " 3) $(menu_item "ocenaudio-bin") $AUR"
+                    echo " 4) $(menu_item "soundconverter soundkonverter" "$([[ ${KDE} -eq 1 ]] && echo "Soundkonverter" || echo "Soundconverter";)")"
+                    echo ""
+                    echo " b) BACK"
+                    echo ""
+                    AUDIO_EDITOR_OPTIONS+=" b"
+                    read_input_options "$AUDIO_EDITOR_OPTIONS"
+                    for OPT in ${OPTIONS[@]}; do
+                        case "$OPT" in
+                            1)
+                            package_install "audacity"
+                            ;;
+                            2)
+                            package_install "easytag"
+                            ;;
+                            3)
+                            aur_package_install "ocenaudio-bin"
+                            ;;
+                            4)
+                            if [[ ${KDE} -eq 1 ]]; then
+                                package_install "soundkonverter"
+                            else
+                                package_install "soundconverter"
+                            fi
+                            ;;
+                            "b")
+                            break
+                            ;;
+                            *)
+                            invalid_option
+                            ;;
+                        esac
+                    done
+                    elihw
+                done
+                #}}}
+                OPT=2
+                ;;
+                3)
+                package_install "gst-plugins-base gst-plugins-base-libs gst-plugins-good \
+                gst-plugins-bad gst-plugins-ugly gst-libav"
+                [[ ${KDE} -eq 1 ]] && package_install "phonon-qt5-gstreamer"
+                # Use the 'standard' preset by default. This preset should generally be
+                # transparent to most people on most music and is already quite high in quality.
+                # The resulting bitrate should be in the 170-210kbps range, according to music
+                # complexity.
+                run_as_user "gconftool-2 --type string --set /system/gstreamer/0.10/audio/profiles/mp3/pipeline \audio/x-raw-int,rate=44100,channels=2 ! lame name=enc preset=1001 ! id3v2mux\""
+                ;;
+                "b")
+                break
+                ;;
+                *)
+                invalid_option
+                ;;
+            esac
+        done
+        elihw
+    done
+}
+
+install_video_apps(){
+    while true
+    do
+        print_title "VIDEO APPS"
+        echo " 1) Players"
+        echo " 2) Editors|Tools"
+        echo " 3) Codecs"
+        echo ""
+        echo " b) BACK"
+        echo ""
+        VIDEO_OPTIONS+=" b"
+        read_input_options "$VIDEO_OPTIONS"
+        for OPT in ${OPTIONS[@]}; do
+            case "$OPT" in
+                1)
+                #PLAYERS {{{
+                while true
+                do
+                    print_title "VIDEO PLAYERS"
+                    echo " 1) $(menu_item "gnome-mplayer")"
+                    echo " 2) $(menu_item "livestreamer")"
+                    echo " 3) $(menu_item "minitube")"
+                    echo " 4) $(menu_item "miro") $AUR"
+                    echo " 5) $(menu_item "mpv")"
+                    echo " 6) $(menu_item "parole")"
+                    echo " 7) $(menu_item "popcorntime-ce") $AUR"
+                    echo " 8) $(menu_item "vlc")"
+                    echo " 9) $(menu_item "kodi")"
+                    echo ""
+                    echo " b) BACK"
+                    echo ""
+                    VIDEO_PLAYER_OPTIONS+=" b"
+                    read_input_options "$VIDEO_PLAYER_OPTIONS"
+                    for OPT in ${OPTIONS[@]}; do
+                        case "$OPT" in
+                            1)
+                            package_install "gnome-mplayer"
+                            ;;
+                            2)
+                            package_install "livestreamer"
+                            ;;
+                            3)
+                            package_install "minitube"
+                            ;;
+                            4)
+                            aur_package_install "miro"
+                            ;;
+                            5)
+                            package_install "mpv"
+                            ;;
+                            6)
+                            package_install "parole"
+                            ;;
+                            7)
+                            aur_package_install "popcorntime-ce"
+                            ;;
+                            8)
+                            package_install "vlc"
+                            [[ ${KDE} -eq 1 ]] && package_install "phonon-qt5-vlc"
+                            ;;
+                            9)
+                            package_install "kodi"
+                            add_user_to_group ${username} kodi
+                            ;;
+                            "b")
+                            break
+                            ;;
+                            *)
+                            invalid_option
+                            ;;
+                        esac
+                    done
+                    elihw
+                done
+                #}}}
+                OPT=1
+                ;;
+                2)
+                #EDITORS {{{
+                while true
+                do
+                    print_title "VIDEO EDITORS|TOOLS"
+                    echo " 1) $(menu_item "arista")"
+                    echo " 2) $(menu_item "avidemux-gtk avidemux-qt" "Avidemux")"
+                    echo " 3) $(menu_item "filebot") $AUR"
+                    echo " 4) $(menu_item "handbrake")"
+                    echo " 5) $(menu_item "kazam") $AUR"
+                    echo " 6) $(menu_item "kdeenlive")"
+                    echo " 7) $(menu_item "lwks" "Lightworks") $AUR"
+                    echo " 8) $(menu_item "openshot")"
+                    echo " 9) $(menu_item "pitivi")"
+                    echo "10) $(menu_item "transmageddon")"
+                    echo ""
+                    echo " b) BACK"
+                    echo ""
+                    VIDEO_EDITOR_OPTIONS+=" b"
+                    read_input_options "$VIDEO_EDITOR_OPTIONS"
+                    for OPT in ${OPTIONS[@]}; do
+                        case "$OPT" in
+                            1)
+                            package_install "arista"
+                            ;;
+                            2)
+                            if [[ ${KDE} -eq 1 ]]; then
+                                package_install "avidemux-qt"
+                            else
+                                package_install "avidemux-gtk"
+                            fi
+                            ;;
+                            3)
+                            aur_package_install "filebot"
+                            ;;
+                            4)
+                            package_install "handbrake"
+                            ;;
+                            5)
+                            aur_package_install "kazam"
+                            ;;
+                            6)
+                            package_install "kdenlive"
+                            ;;
+                            7)
+                            aur_package_install "lwks"
+                            ;;
+                            8)
+                            package_install "openshot"
+                            ;;
+                            9)
+                            package_install "pitivi frei0r-plugins"
+                            ;;
+                            10)
+                            package_install "transmageddon"
+                            ;;
+                            "b")
+                            break
+                            ;;
+                            *)
+                            invalid_option
+                            ;;
+                        esac
+                    done
+                    elihw
+                done
+                #}}}
+                OPT=2
+                ;;
+                3)
+                package_install "libquicktime libdvdnav libdvdcss cdrdao"
+                aur_package_install "libaacs"
+                if [[ $ARCHI == i686 ]]; then
+                    aur_package_install "codecs"
+                else
+                    aur_package_install "codecs64"
+                fi
+                package_install "ffmpeg"
+                ;;
+                "b")
+                break
+                ;;
+                *)
+                invalid_option
+                ;;
+            esac
+        done
+        elihw
+    done
 }

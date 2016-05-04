@@ -105,3 +105,41 @@ set_hw_clock() {
 
     [[ $(cat ${ANSWER}) != "" ]] && arch_chroot "hwclock --systohc --$(cat ${ANSWER})"  2>/tmp/.errlog && check_for_error
 }
+
+
+setlocale() {
+    local _locale_list=(`cat /etc/locale.gen | grep UTF-8 | sed 's/\..*$//' | sed '/@/d' | awk '{print $1}' | uniq | sed 's/#//g'`);
+    PS3="$prompt1"
+    echo "Select locale:"
+    select LOCALE in "${_locale_list[@]}"; do
+        if contains_element "$LOCALE" "${_locale_list[@]}"; then
+            LOCALE_UTF8="${LOCALE}.UTF-8"
+            break
+        else
+            invalid_option
+        fi
+    done
+}
+
+settimezone() {
+    local _zones=(`timedatectl list-timezones | sed 's/\/.*$//' | uniq`)
+    PS3="$prompt1"
+    echo "Select zone:"
+    select ZONE in "${_zones[@]}"; do
+        if contains_element "$ZONE" "${_zones[@]}"; then
+            local _subzones=(`timedatectl list-timezones | grep ${ZONE} | sed 's/^.*\///'`)
+            PS3="$prompt1"
+            echo "Select subzone:"
+            select SUBZONE in "${_subzones[@]}"; do
+                if contains_element "$SUBZONE" "${_subzones[@]}"; then
+                    break
+                else
+                    invalid_option
+                fi
+            done
+            break
+        else
+            invalid_option
+        fi
+    done
+}
