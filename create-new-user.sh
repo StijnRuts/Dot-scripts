@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+source ./shared-functions.sh
 
 # Loop while user name is blank, has spaces, or has capital letters in it.
 USER=""
@@ -23,7 +24,7 @@ if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]]; then
     package_install "sudo"
     # set sudo access for the 'wheel' group in /etc/sudoers.d/
     # instead of editing /etc/sudoers directly
-    echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers.d/wheel
+    echo "%wheel ALL=(ALL) ALL" > /etc/sudoers.d/wheel
     # Add user to the 'wheel' group
     groupadd wheel
     gpasswd -a ${USER} wheel

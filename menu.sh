@@ -1,7 +1,22 @@
 #!/usr/bin/env bash
-source shared_function.sh
+source ./shared-functions.sh
+
+check_requirements() {
+
+    if [[ `whoami` != "root" ]]; then
+        echo "must be run as root"
+        exit 1
+    fi
+
+    if [[ ! $(ping -c 1 archlinux.org) ]]; then
+        echo "internet connection required"
+        exit 1
+    fi
+
+}
 
 setup() {
+    sh ./disable-beep.sh
     package_install "dialog"
 
     ANSWER="/tmp/dot-scripts"
@@ -29,21 +44,25 @@ main_menu() {
         "12" "Install development software" \
     2>${ANSWER}
 
+    clear
+
     case $(cat ${ANSWER}) in
-        "1") sh set-locales.sh ;;
-        "2") sh configure-mirrorlist.sh ;;
-        "3") sh create-new-user.sh ;;
-        "4") sh install-aur-helper.sh ;;
-        "5") sh install-xorg.sh ;;
-        "6") sh install-fonts.sh ;;
-        "7") sh install-desktop.sh ;;
-        "8") sh install-networking.sh ;;
-        "9") sh install-multimedia.sh ;;
+        "1")  sh set-locales.sh ;;
+        "2")  sh configure-mirrorlist.sh ;;
+        "3")  sh create-new-user.sh ;;
+        "4")  sh install-aur-helper.sh ;;
+        "5")  sh install-xorg.sh ;;
+        "6")  sh install-fonts.sh ;;
+        "7")  sh install-desktop.sh ;;
+        "8")  sh install-networking.sh ;;
+        "9")  sh install-multimedia.sh ;;
         "10") sh install-cups.sh ;;
         "11") sh install-general-software.sh ;;
         "12") sh install-development-software.sh ;;
-        *) clear; echo "Thank you for using Dot-scripts"; exit ;;
+        *) echo "Thank you for using Dot-scripts"; exit 0 ;;
     esac
+
+    sleep 3
 
     HIGHLIGHT=$(cat ${ANSWER})
     main_menu
@@ -51,5 +70,6 @@ main_menu() {
 
 
 # Execution
+check_requirements
 setup
 main_menu

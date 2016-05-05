@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-source shared_function.sh
+source ./shared-functions.sh
 
 # Setup pacman keyring
 # package_install "haveged"
