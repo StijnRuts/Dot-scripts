@@ -24,7 +24,7 @@ setup() {
 }
 
 main_menu() {
-    if [[ $HIGHLIGHT != 12 ]]; then
+    if [[ $HIGHLIGHT != 13 ]]; then
         HIGHLIGHT=$(( HIGHLIGHT + 1 ))
     fi
 
@@ -35,13 +35,14 @@ main_menu() {
         "3"  "Create new user" \
         "4"  "Install AUR helper" \
         "5"  "Install Xorg" \
-        "6"  "Install fonts" \
+        "6"  "Install graphics driver" \
         "7"  "Install desktop" \
         "8"  "Install networking" \
-        "9"  "Install multimedia" \
-        "10" "Install CUPS" \
-        "11" "Install general software" \
-        "12" "Install development software" \
+        "9"  "Install fonts" \
+        "10"  "Install multimedia" \
+        "11" "Install CUPS" \
+        "12" "Install general software" \
+        "13" "Install development software" \
     2>${ANSWER}
 
     clear
@@ -52,14 +53,15 @@ main_menu() {
         "3")  sh create-new-user.sh ;;
         "4")  sh install-aur-helper.sh ;;
         "5")  sh install-xorg.sh ;;
-        "6")  sh install-fonts.sh ;;
+        "6")  sh install-graphics-driver.sh ;;
         "7")  sh install-desktop.sh ;;
         "8")  sh install-networking.sh ;;
-        "9")  sh install-multimedia.sh ;;
-        "10") sh install-cups.sh ;;
-        "11") sh install-general-software.sh ;;
-        "12") sh install-development-software.sh ;;
-        *) echo "Thank you for using Dot-scripts"; exit 0 ;;
+        "9")  sh install-fonts.sh ;;
+        "10")  sh install-multimedia.sh ;;
+        "11") sh install-cups.sh ;;
+        "12") sh install-general-software.sh ;;
+        "13") sh install-development-software.sh ;;
+        *) echo "Thank you for using Dot-scripts!"; exit 0 ;;
     esac
 
     sleep 3
