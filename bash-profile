@@ -1,0 +1,8 @@
+#
+# ~/.bash_profile
+#
+
+# activate numlock
+setleds -D +num
+
+[[ -f ~/.bashrc ]] && . ~/.bashrc

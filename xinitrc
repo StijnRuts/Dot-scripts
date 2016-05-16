@@ -28,7 +28,19 @@ if [ -d /etc/X11/xinit/xinitrc.d ] ; then
  unset f
 fi
 
-urxvtd &
-feh --bg-scale ~/Pictures/wallpaper.jpg &
+
+# activate numlock
+numlockx on &
+
+# set pointer as the default cursor
 xsetroot -cursor_name left_ptr &
+
+# set background
+xsetroot -bg \#131313 -mod 3 3 &
+# feh --bg-scale ~/Pictures/wallpaper.jpg &
+
+# start urxvt deamon
+urxvtd &
+
+# start bspwm
 exec bspwm

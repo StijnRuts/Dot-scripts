@@ -2,7 +2,7 @@
 source ./shared-functions.sh
 
 # Install xorg
-package_install "xorg-server xorg-server-common xorg-server-utils xorg-apps xorg-xinit"
+package_install "xorg-server xorg-server-common xorg-server-utils xorg-apps xorg-xinit numlockx"
 
 # Install input drivers
 package_install "xf86-input-libinput xorg-xinput"
