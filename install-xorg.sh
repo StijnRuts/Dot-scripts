@@ -8,14 +8,15 @@ package_install "xorg-server xorg-server-common xorg-server-utils xorg-apps xorg
 package_install "xf86-input-libinput xorg-xinput"
 # package_install "xf86-input-evdev xf86-input-joystick xf86-input-keyboard xf86-input-mouse xf86-input-synaptics xf86-input-wacom"
 
-# Touchpad configuration; Tapping may be disabled by default. To enable it, add a configuration file:
-# /etc/X11/xorg.conf.d/30-touchpad.conf
-# Section "InputClass"
-#     Identifier "MyTouchpad"
-#     MatchIsTouchpad "on"
-#     Driver "libinput"
-#     Option "Tapping" "on"
-# EndSection
+# Touchpad configuration, enable tapping
+cat > /etc/X11/xorg.conf.d/30-touchpad.conf << "EOF"
+Section "InputClass"
+    Identifier "MyTouchpad"
+    MatchIsTouchpad "on"
+    Driver "libinput"
+    Option "Tapping" "on"
+EndSection
+EOF
 
 # Copy the xinit configuration file
 ln ./xinitrc ~/.xinitrc

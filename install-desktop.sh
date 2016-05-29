@@ -1,20 +1,17 @@
 #!/usr/bin/env bash
 source ./shared-functions.sh
 
-package_install "bspwm sxhkd feh rxvt-unicode dmenu"
+package_install "bspwm sxhkd dmenu rxvt-unicode feh"
 package_install "polkit gnome-keyring gvfs xdg-utils xdg-user-dirs"
 
-# ln ./xinitrc ~/.xinitrc
-cp -f ./xinitrc /home/stijn/.xinitrc
+ln -sf $(pwd)/xinitrc ~/.xinitrc
 
 mkdir -p ~/.config/bspwm
-mkdir -p /home/stijn/.config/bspwm
-# ln ./bspwmrc ~/.config/bspwm/bspwmrc
-cp -f ./bspwmrc /home/stijn/.config/bspwm/bspwmrc
+ln -sf $(pwd)/bspwmrc ~/.config/bspwm/bspwmrc
+chmod +x ~/.config/bspwm/bspwmrc
 
 mkdir -p ~/.config/sxhkd
-mkdir -p /home/stijn/.config/sxhkd
-# ln ./sxhkdrc ~/.config/sxhkd/sxhkdrc
-cp -f ./sxhkdrc /home/stijn/.config/sxhkd/sxhkdrc
+ln -sf $(pwd)/sxhkdrc ~/.config/sxhkd/sxhkdrc
+chmod +x ~/.config/sxhkd/sxhkdrc
 
-# ln ./wallpaper.jpg ~/Pictures/wallpaper.jpg
+# ln -sf $(pwd)/wallpaper.jpg ~/Pictures/wallpaper.jpg

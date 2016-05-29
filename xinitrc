@@ -29,6 +29,9 @@ if [ -d /etc/X11/xinit/xinitrc.d ] ; then
 fi
 
 
+# reset backlight level
+xbacklight -set 30 &
+
 # activate numlock
 numlockx on &
 
@@ -37,10 +40,12 @@ xsetroot -cursor_name left_ptr &
 
 # set background
 xsetroot -bg \#131313 -mod 3 3 &
+# xsetroot -solid \#008081
 # feh --bg-scale ~/Pictures/wallpaper.jpg &
 
 # start urxvt deamon
 urxvtd &
 
-# start bspwm
+# start sxhkd & bspwm
+sxhkd -m 1 &
 exec bspwm
